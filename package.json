@@ -1,0 +1,17 @@
+{
+  "name": "antigravity-localization",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Zero-config Simplified Chinese UI localization plugin for Google Antigravity Desktop.",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/localization.test.mjs"
+  },
+  "author": "Eureka-o",
+  "homepage": "https://github.com/Eureka-o/chinese-antigravity",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Eureka-o/chinese-antigravity.git"
+  },
+  "license": "MIT"
+}

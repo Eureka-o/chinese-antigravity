@@ -1,0 +1,8 @@
+{
+  "command": "node",
+  "args": ["main.mjs"],
+  "restart_policy": "always",
+  "display_name": "简体中文界面 / Chinese UI",
+  "description": "在 Antigravity 桌面窗口中自动注入简体中文界面词库，支持即时开关并在客户端更新后自愈快捷方式。",
+  "has_web_ui": false
+}
