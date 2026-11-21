@@ -2,7 +2,7 @@
   "name": "antigravity-localization",
   "displayName": "Antigravity 简体中文 / Chinese UI",
   "description": "Zero-config Simplified Chinese UI localization for Google Antigravity Desktop with live enable/disable switching and automatic update survival. 为 Google Antigravity 桌面端提供零配置简体中文界面汉化，支持一键即时启用/停用，并在客户端更新后持续生效。",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "logo": "assets/logo.svg",
   "author": {
     "name": "Eureka-o",

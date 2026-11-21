@@ -328,3 +328,48 @@ test('runtime translates 2.33.1 controls, protects user/model content, and resto
   assert.equal(sandbox.docListeners.get('pointerenter').size, 0);
   assert.equal(sandbox.docListeners.get('contextmenu').size, 0);
 });
+
+test('runtime localizes 2.34.0 settings, history, model help, and plugin controls', () => {
+  const sandbox = createDomSandbox();
+  const { el, document } = sandbox;
+  const retryText = "Couldn't load older messages · Retry";
+  const effortHint = 'Controls how much time and quota the model spends reasoning before responding. Higher effort improves accuracy on hard problems, at the cost of slower responses and higher quota use.';
+  const inputBoxHeading = el('h3', {}, ['Input Box']);
+  const sendOption = el('button', { title: 'Press Ctrl+Enter to send, Enter for a new line.' }, ['Ctrl+Enter']);
+  const effortHeading = el('span', {}, ['Thinking effort']);
+  const effortInfo = el('span', { 'data-testid': 'model-selector-effort-info', 'aria-label': effortHint });
+  const modelName = el('button', { 'data-testid': 'model-selector-trigger' }, ['Gemini 4 Neon']);
+  const moreBundles = el('button', { 'aria-label': 'See 2 more bundles' }, ['See 2 more']);
+  const signOut = el('button', { 'aria-busy': 'true' }, ['Signing out…']);
+  const appPanel = el('section', { 'aria-label': 'MCP App' });
+  const pagination = el('button', { 'aria-label': 'No messages in last 12 steps, load older' }, [retryText]);
+  const notice = el('span', { role: 'status' }, ['No visible messages in last 12 steps. Activate Load older messages to continue.']);
+  const cookies = el('h2', {}, ['Cookies by Site']);
+  const userMessage = el('div', { 'data-testid': 'user-message-content' }, ['Thinking effort']);
+
+  document.body.append(
+    inputBoxHeading, sendOption,
+    el('div', { 'data-testid': 'model-selector-effort-header' }, [effortHeading, effortInfo]),
+    modelName, moreBundles, signOut, appPanel, pagination, notice, cookies, userMessage,
+  );
+
+  assert.equal(vm.runInNewContext(makeSource('https://127.0.0.1:12718', DICTIONARY, RUNTIME), sandbox), 'active');
+  assert.equal(inputBoxHeading.textContent, '输入框');
+  assert.equal(sendOption.getAttribute('title'), '按 Ctrl+Enter 发送，按 Enter 换行。');
+  assert.equal(sendOption.textContent, 'Ctrl+Enter');
+  assert.equal(effortHeading.textContent, '思考强度');
+  assert.match(effortInfo.getAttribute('aria-label'), /控制模型在回复前用于推理的时间和额度/);
+  assert.equal(modelName.textContent, 'Gemini 4 Neon');
+  assert.equal(moreBundles.getAttribute('aria-label'), '再查看 2 个组合包');
+  assert.equal(signOut.textContent, '正在退出登录…');
+  assert.equal(appPanel.getAttribute('aria-label'), 'MCP 应用');
+  assert.equal(pagination.textContent, '无法加载更早的消息 · 重试');
+  assert.equal(pagination.getAttribute('aria-label'), '最近 12 步没有消息，加载更早的消息');
+  assert.equal(notice.textContent, '最近 12 步没有可显示的消息。选择“加载更早的消息”继续。');
+  assert.equal(cookies.textContent, '按站点管理 Cookie');
+  assert.equal(userMessage.textContent, 'Thinking effort');
+
+  sandbox.__AGY_I18N_DISPOSE__();
+  assert.equal(effortInfo.getAttribute('aria-label'), effortHint);
+  assert.equal(pagination.textContent, retryText);
+});
